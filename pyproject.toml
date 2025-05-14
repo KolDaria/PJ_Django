@@ -10,6 +10,33 @@ python = "^3.13"
 django = "^5.2"
 
 
+[tool.poetry.group.lint.dependencies]
+flake8 = "^7.2.0"
+mypy = "^1.15.0"
+isort = "^6.0.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+disallow_untyped_defs = true
+warn_return_any = true
+exclude = 'venv'
+
+[tool.black]
+line-length = 119
+exclude ="""
+(
+    /)
+        /.git
+      | /.eggs
+      | /.mypy_cache
+      | /.venv
+    (/
+    | foo.py
+)
+"""
+
+[tool.isort]
+line_length = 119
