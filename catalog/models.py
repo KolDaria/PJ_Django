@@ -50,3 +50,39 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Contact(models.Model):
+    name = models.CharField(
+        max_length=150,
+        verbose_name="Наименование контакта",
+        help_text="Введите наименование контакта",
+    )
+    email = models.EmailField(
+        max_length=254,
+        verbose_name="Email",
+        help_text="Введите email",
+    )
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True,
+        verbose_name="Номер телефона",
+        help_text="Введите номер телефона",
+    )
+    address = models.TextField(
+        blank=True,
+        verbose_name="Адрес",
+        help_text="Введите адрес",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата создания",
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Контакт"
+        verbose_name_plural = "Контакты"
+        ordering = ["name"]
