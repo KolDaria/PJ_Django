@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block name %}Подробное описание товара{% endblock %}
+
+{% block content %}
+<h1 class="display-4">{{ product.name }}</h1>
+</div>
+    <div class="container mt-3 text-left">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="300">
+        {% endif %}
+        <p>Наименование: {{ product.name }}</p>
+        <p>Описание: {{ product.description }}</p>
+        <p>Категория: {{ product.category }}</p>
+        <p>Цена: {{ product.purchase_price}}</p>
+        <p>Дата создания: {{ product.created_at|date:"d M Y" }}</p>
+        <p>Дата обновления: {{ product.updated_at|date:"d M Y" }}</p>
+{% endblock %}
