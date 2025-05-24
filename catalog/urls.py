@@ -8,8 +8,8 @@ from catalog.views import contact_list, contact_view, home_view, product_detail,
 app_name = CatalogConfig.name
 
 urlpatterns = [
-    path('product_detail/<int:product_id>', product_detail, name='product_detail'),
     path('product_list/', product_list, name='product_list'),
+    path('product_detail/<int:product_id>', product_detail, name='product_detail'),
     path('', home_view, name='home_view'),
     path('contacts/', contact_list, name='contact_list'),
     path('contact_view/', contact_view, name='contact_view'),

@@ -13,6 +13,8 @@
             <img src="{{ product.image.url }}" alt="{{ product.name }}" width="100">
         {% endif %}
             {{ product.name }}: {{product.description|truncatechars:100}}
+
+            <a href="{% url 'catalog:product_detail' product_id=product.pk %}" class="btn btn-primary btn-sm" style="margin-top: 5px;">Подробнее</a>
         </li>
         {% endfor %}
     </ul>
