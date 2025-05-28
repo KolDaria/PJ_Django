@@ -20,8 +20,10 @@ def contact_view(request):
 
 
 def home_view(request):
+    products = Product.objects.all()
     latest_products = Product.objects.order_by('-created_at')[:5]
-    context = {'latest_products': latest_products}
+    context = {'latest_products': latest_products,
+               'products': products}
     return render(request, 'home.html', context)
 
 
@@ -29,3 +31,15 @@ def contact_list(request):
     contactss = Contact.objects.all()
     context = {'contacts': contactss}
     return render(request, 'contacts.html', context)
+
+
+def product_list(request):
+    products = Product.objects.all()
+    context = {'products': products}
+    return render(request, 'products_list.html', context)
+
+
+def product_detail(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    context = {'product': product}
+    return render(request, 'product_detail.html', context)
