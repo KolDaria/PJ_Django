@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Список публикаций{% endblock %}
+
+{% block content %}
+<h2>Список публикаций</h2>
+</div>
+<div class="container mt-3">
+    <ul class="list-group">
+    {% for blog in blogs %}
+        <li class="list-group-item">
+            <a href="{% url 'blog:blog_detail' blog.pk %}"></a> {{ blog.title }} - {{ blog.created_at|date:"d M Y" }}
+            <a href="{% url 'blog:blog_detail' blog.pk %}" class="btn btn-primary btn-sm" style="margin-top: 5px;">Подробнее</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

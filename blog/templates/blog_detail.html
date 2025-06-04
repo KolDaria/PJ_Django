@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Список публикаций{% endblock %}
+
+{% block content %}
+<h1 class="display-4">{{ blog.title }}</h1>
+</div>
+    <div class="container mt-3 text-center">
+        {% if blog.image %}
+        <img src="{{ blog.image.url }}" width="300">
+        {% endif %}
+    </div>
+
+<div class="container mt-3 text-left">
+    <p>Содержимое: {{blog.content}}</p>
+    <p>Дата публикации: {{ blog.created_at|date:"d M Y" }}</p>
+    <p>Дата изменения: {{ blog.updated_at|date:"d M Y" }}</p>
+    <a href="{% url 'blog:blog_edit' blog.pk %}" class="btn btn-primary btn-sm" style="margin-top: 5px;">Редактировать</a>
+    <a href="{% url 'blog:blog_delete' blog.pk %}" class="btn btn-primary btn-sm" style="margin-top: 5px;">Удалить</a>
+    <a href="{% url 'blog:blogs_list' %}" class="btn btn-primary btn-sm" style="margin-top: 5px;">Вернуться к списку</a>
+</div>
+{% endblock %}
