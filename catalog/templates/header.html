@@ -4,7 +4,8 @@
     <nav class="ms-5">
         <a class="p-2 btn btn-outline-primary" href="{% url 'main' %}">Главная</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contact_list' %}">Контакты</a>
-        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_list' %}">Список товаров</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:products_list' %}">Список товаров</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_create' %}">Добавить товар</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'blog:blogs_list' %}">Список публикаций</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'blog:blog_create' %}">Добавить публикацию</a>
     </nav>
