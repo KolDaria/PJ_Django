@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="display-4">Профиль пользователя</h1>
+</div>
+<div class="container mt-3 text-left">
+    {% if product.image %}
+    <img src="{{ users.image.url }}"  width="300">
+    {% endif %}
+        <p>Имя: {{ user.first_name }}</p>
+        <p>Фамилия: {{ user.profile.last_name }}</p>
+        <p>Дата рождения: {{ user.profile.birth_date }}</p>
+
+    {% if user == request.user %}
+    <a href="{% url 'users:edit_profile' %}">Редактировать профиль</a>
+    {% endif %}
+{% endblock %}
