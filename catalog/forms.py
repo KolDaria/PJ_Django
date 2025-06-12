@@ -54,4 +54,4 @@ class ProductForm(StyleFormMixin, ModelForm):
 
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = ['name', 'description', 'purchase_price', 'category']

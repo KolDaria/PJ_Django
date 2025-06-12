@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 # Create your models here.
 class Category(models.Model):
@@ -40,6 +42,7 @@ class Product(models.Model):
         help_text="Введите категорию товара",
         null=True)
     purchase_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена за покупки", default=0.00)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
