@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Упс!</h1>
+    <p>У вас нет прав на изменение этого продукта.</p>
+    <a href="{% url 'catalog:products_list' %}">Вернуться к списку продуктов</a>
+{% endblock %}

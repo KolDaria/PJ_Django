@@ -32,6 +32,10 @@ class BlogCreateView(CreateView):
     template_name = 'blog_form.html'
     success_url = reverse_lazy('blog:blogs_list')
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 
 class BlogUpdateView(UpdateView):
     model = Blog
@@ -40,6 +44,10 @@ class BlogUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('blog:blog_detail', kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class BlogDeleteView(DeleteView):

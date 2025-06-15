@@ -1,6 +1,9 @@
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
@@ -59,21 +62,42 @@ class ProductDetailDetailView(DetailView):
     pk_url_kwarg = 'product_id'
 
 
+@method_decorator(login_required, name='dispatch')
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'product_form.html'
     success_url = reverse_lazy('catalog:products_list')
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
-class ProductUpdateView(UpdateView):
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'product_form.html'
     success_url = reverse_lazy('catalog:products_list')
 
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.user != request.user:
+            return HttpResponseForbidden("У вас нет прав на редактирование этого продукта.")
+        return super().dispatch(request, *args, **kwargs)
 
-class ProductDeleteView(DeleteView):
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'product_delete.html'
     success_url = reverse_lazy('catalog:products_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.user != request.user:
+            return HttpResponseForbidden("У вас нет прав на удаление этого продукта.")
+        return super().dispatch(request, *args, **kwargs)
