@@ -22,6 +22,7 @@ class UserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name="Email")
@@ -55,7 +56,6 @@ class Profile(models.Model):
                                   help_text="Введите дату рождения")
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, verbose_name="Фото профиля",
                                         help_text="Добавьте фото профиля")
-
 
     def __str__(self):
         return str(self.user.username)
