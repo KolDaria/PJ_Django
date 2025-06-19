@@ -1,7 +1,7 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -98,6 +98,15 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         product = self.get_object()
-        if product.user != request.user:
+        if not (product.user == request.user or request.user.has_perm('catalog.delete_product')):
             return HttpResponseForbidden("У вас нет прав на удаление этого продукта.")
         return super().dispatch(request, *args, **kwargs)
+
+
+@login_required
+@permission_required('catalog.can_unpublish_product', raise_exception=True)
+def unpublish_product(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    product.publication_attribute = False
+    product.save()
+    return redirect('catalog:product_detail', product_id=product.id)
