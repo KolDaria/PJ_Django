@@ -1,14 +1,17 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
 from catalog.forms import ProductForm
-from catalog.models import Contact, Product
+from catalog.models import Category, Contact, Product
+from catalog.services import ProductService
 
 
 # Create your views here.
@@ -52,14 +55,26 @@ class ProductListListView(ListView):
     model = Product
     template_name = 'products_list.html'
     context_object_name = 'products'
-    queryset = Product.objects.all()
+
+    def get_queryset(self):
+        queryset = cache.get('product_queryset')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('product_queryset', queryset, 60 * 15)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class ProductDetailDetailView(DetailView):
     model = Product
     template_name = 'product_detail.html'
     context_object_name = 'product'
-    pk_url_kwarg = 'product_id'
+    pk_url_kwarg = 'pk'
 
 
 @method_decorator(login_required, name='dispatch')
@@ -110,3 +125,16 @@ def unpublish_product(request, product_id):
     product.publication_attribute = False
     product.save()
     return redirect('catalog:product_detail', product_id=product.id)
+
+
+class CategoryDetailView(DetailView):
+    model = Category
+    template_name = 'category_detail.html'
+    context_object_name = 'category'
+    pk_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = self.object
+        context['product_in_category'] = ProductService.get_list_product_in_category(category.id)
+        return context

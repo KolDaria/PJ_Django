@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block name %}{{ category.name }}{% endblock %}
+
+{% block content %}
+    <h1 class="display-4">{{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+
+    <div>
+        <h2>Продукты в категории:</h2>
+        {% if product_in_category %}
+            <ul>
+                {% for product in product_in_category %}
+                    <li>
+                        <a href="{% url 'catalog:product_detail' pk=product.pk %}">{{ product.name }}</a> - {{ product.purchase_price }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Нет продуктов в данной категории</p>
+        {% endif %}
+    </div>
+{% endblock %}

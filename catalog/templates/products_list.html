@@ -3,7 +3,7 @@
 {% block name %}Список товаров{% endblock %}
 
 {% block content %}
-<h2>Список товаров</h2>
+<h2>Список доступных продуктов</h2>
 </div>
 <div class="container mt-3">
     <ul class="list-group">
@@ -11,12 +11,24 @@
         <li class="list-group-item">
             {% if product.image %}
             <img src="{{ product.image.url }}" alt="{{ product.name }}" width="100">
-        {% endif %}
+            {% endif %}
             {{ product.name }}: {{product.description|truncatechars:100}}
-
-            <a href="{% url 'catalog:product_detail' product_id=product.pk %}" class="btn btn-primary btn-sm" style="margin-top: 5px;">Подробнее</a>
+            <a href="{% url 'catalog:product_detail' pk=product.pk %}" class="btn btn-primary btn-sm" style="margin-top: 5px;">Подробнее</a>
         </li>
         {% endfor %}
     </ul>
 </div>
+
+<div class="container mt-3 text-center">
+<h2>Список доступных категорий</h2>
+</div>
+    <div class="container mt-3">
+        <ul class="list-group">
+            {% for category in categories %}
+                <li class="list-group-item">
+                    <a href="{% url 'catalog:category_detail' pk=category.pk %}">{{ category.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
